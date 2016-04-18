@@ -14,14 +14,16 @@ def env_requirements(env_name):
         session=False)
     return [str(ir.req) for ir in _parsed_reqs]
 
+__version__ = '0.2.1'
+
 setup(
     name='useful_collections',
-    version='0.1',
+    version=__version__,
     author='Samuel Sampaio',
     author_email='samuel@smk.net.br',
-    description='Python snippets collections to manipulate data',
+    description='Useful collections for manipulate data in Python',
     url='https://github.com/samukasmk/python-useful-collections',
-    download_url = 'https://github.com/samukasmk/python-useful-collections/tarball/0.1', # I'll explain this in a second
+    download_url = 'https://github.com/samukasmk/python-useful-collections/tarball/'+str(__version__), # I'll explain this in a second
     keywords = ['collections', 'dict', 'immutable', 'immutability', 'lock',
                 'data', 'modules', 'class'],
     # packages of project

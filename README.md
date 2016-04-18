@@ -1,9 +1,16 @@
 # python-useful-collections
 Useful collections for manipulate python data
 
-###### Available collections:
-* [**ImmutableDict**](#immutabledict-usage): once constructed the object does not change more
-* [**LockableDict**](#lockabledict-usage): you can change while attribute `instance.is_locked == False`
+#### Available collections:
+
+###### Immutability:
+* [**ImmutableDict**](#immutabledict-usage): for create immutable objects, once constructed the object does not change more
+* [**LockableDict**](#lockabledict-usage): for create dynamic objects, to lock and release immutability while attribute `instance.is_locked == False`
+
+###### Discovery:
+* [**DiscoverySubModules**](#discoverysubmodules-usage): for discovery and return dict with local sub modules mapped
+
+<!-- * [**DiscoverySubClass**](#discoverysubclass-usage): for discovery and return dict with local sub class mapped -->
 
 ## ImmutableDict Usage:
 
@@ -85,3 +92,69 @@ useful_collections.dict.DictIsLocked: '__setattr__' method is forbidden for type
 >>> d.a
 'changed again'
 ```
+
+## DiscoverySubModules Usage:
+Example of mapping submodules in package
+
+* Create a package:
+
+```shell
+mkdir my_package
+touch my_package/my_submod.py
+touch my_package/other_submod.py
+```
+* Define mapping in package constructor (my_package/__init__.py):
+
+```python
+# import your desired modules here
+from . import my_submod, other_submod
+# import DiscoverySubModules collection
+from useful_collections.discoveries import DiscoverySubModules
+submodules = DiscoverySubModules(__name__)
+```
+
+* Import your package and get submodules mapped in constructor
+
+```python
+>>> import my_package
+>>> my_package.submodules
+{'my_submod': <module 'my_package.my_submod' from '.../my_package/my_submod.py'>,
+ 'other_submod': <module 'my_package.other_submod' from '.../my_package/other_submod.py'>}
+```
+
+* Or just import the dict with mapped submodules
+
+```python
+>>> from my_package import submodules as my_package_submodules
+>>> my_package_submodules
+{'my_submod': <module 'my_package.my_submod' from '.../my_package/my_submod.py'>,
+ 'other_submod': <module 'my_package.other_submod' from '.../my_package/other_submod.py'>}
+```
+
+<!-- ## DiscoverySubClass Usage:
+This example is similar that previous but we will declare class
+
+* Declare MySubClassInsideModule class in my_package/my_submod.py
+
+```python
+class MySubClassInsideModule:
+  pass
+```
+
+* Declare OtherClassInsideModuleToo class in my_package/other_submod.py
+
+```python
+class OtherClassInsideModuleToo:
+  pass
+```
+
+
+* Define mapping in package constructor (my_package/__init__.py):
+
+```python
+# import your desired modules here
+from . import my_submod, other_submod
+# import DiscoverySubModules collection
+from useful_collections.discoveries import DiscoverySubClass
+mapped_class = DiscoverySubClass(__name__)
+``` -->
